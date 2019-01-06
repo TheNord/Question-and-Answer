@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\User;
+use Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class AuthController extends Controller
 {
@@ -13,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('jwt', ['except' => ['login']]);
+        $this->middleware('jwt', ['except' => ['login', 'signup']]);
     }
 
     /**
@@ -30,6 +33,23 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+
+    public function signup(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+        ]);
+
+        return $this->login($request->all());
     }
 
     /**

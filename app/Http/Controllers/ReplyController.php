@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class ReplyController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('jwt', ['except' => ['index', 'show']]);
+    }
+
     public function index(Question $question)
     {
         return ReplyResource::collection($question->replies);
