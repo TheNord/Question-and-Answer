@@ -40,7 +40,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|confirmed|string|min:6'
         ]);
 
         User::create([
@@ -96,7 +96,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()->name
         ]);
     }
 }
