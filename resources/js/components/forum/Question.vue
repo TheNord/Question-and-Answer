@@ -7,7 +7,10 @@
                         {{ question.title }}
                     </router-link>
                 </h3>
-                <div class="grey--text">{{ question.created_at }}</div>
+                <div class="grey--text">
+                    {{ question.user }} said
+                    {{ question.created_at }}
+                </div>
             </div>
         </v-card-title>
         <v-card-text>
