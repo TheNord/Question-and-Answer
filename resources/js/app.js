@@ -4,10 +4,14 @@ window.Vue = require('vue');
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import VueSimplemde from 'vue-simplemde'
+import md from 'marked'
+import User from './Helpers/User'
 
 Vue.use(Vuetify);
+Vue.use(VueSimplemde);
 
-import User from './Helpers/User'
+window.md = md;
 window.User = User;
 
 window.EventBus = new Vue();

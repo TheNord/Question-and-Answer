@@ -20,9 +20,15 @@ class QuestionController extends Controller
 
     public function store(Request $request)
     {
-        Question::create($request->all());
+        $request->validate([
+            'title' => 'required|string|max:255|unique:questions',
+            'body' => 'required|string|min:30',
+            'category_id' => 'required'
+        ]);
 
-        return response('Created', 201);
+        $question = $request->user()->question()->create($request->all());
+
+        return response(new QuestionResource($question), 201);
     }
 
     public function show(Question $question)
