@@ -20,12 +20,16 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        Category::create([
+        $request->validate([
+            'name' => 'required|string|min:3|max:255|unique:categories'
+        ]);
+
+        $category = Category::create([
             'name' => $request->name,
             'slug' => str_slug($request->name)
         ]);
 
-        return response('Category created', 201);
+        return response(new CategoryResource($category), 201);
     }
 
     public function show(Category $category)
@@ -39,7 +43,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'slug' => str_slug($request->name)
         ]);
-        return response('Updated', 202);
+        return response(new CategoryResource($category), 202);
     }
 
     public function destroy(Category $category)
