@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class QuestionController extends Controller
 {
@@ -38,13 +40,31 @@ class QuestionController extends Controller
 
     public function update(Request $request, Question $question)
     {
+        $request->validate([
+            'title' => ['required', 'string', 'max:255',  Rule::unique('questions')->ignore($question->id)],
+            'body' => 'required|string|min:30'
+        ]);
+
         $question->update($request->all());
         return response('Updated', 202);
     }
 
     public function destroy(Question $question)
     {
-        $question->delete();
-        return response(null, 204);
+        try {
+            $this->checkAccess($question->user_id);
+            $question->delete();
+            return response(null, 204);
+        } catch (\Exception $e) {
+            return response(['error' => $e->getMessage()], 400);
+        }
+
+    }
+
+    private function checkAccess($id) {
+        if (auth()->id() != $id){
+            throw new \Exception('You can only manage your questions.');
+        }
+
     }
 }
