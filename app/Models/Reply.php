@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    protected $guarded = [];
+    protected $fillable = ['body', 'question_id', 'user_id'];
 
     public function question()
     {
@@ -22,5 +22,14 @@ class Reply extends Model
     public function like()
     {
         return $this->hasMany(Like::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($reply) {
+            $reply->user_id = auth()->id();
+        });
     }
 }

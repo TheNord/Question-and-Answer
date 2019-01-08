@@ -4,16 +4,27 @@
             v-if="editing"
             :form="question"
         ></edit-question>
+
         <show-question
              v-else
             :data="question"
         ></show-question>
+
+        <replies
+            :replies="question.replies"
+            :question-slug="question.slug"
+        ></replies>
+
+        <new-reply :question-slug="question.slug"></new-reply>
+
     </div>
 </template>
 
 <script>
     import ShowQuestion from './ShowQuestion'
     import EditQuestion from  './EditQuestion'
+    import Replies from  '../reply/Replies'
+    import NewReply from  '../reply/NewReply'
 
     export default {
         data() {
@@ -44,7 +55,9 @@
         },
         components: {
             ShowQuestion,
-            EditQuestion
+            EditQuestion,
+            Replies,
+            NewReply
         }
     }
 </script>
