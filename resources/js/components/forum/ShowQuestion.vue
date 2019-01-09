@@ -47,6 +47,12 @@
                 }
             }
         },
+        created() {
+            Echo.private('App.User.' + User.id())
+                .notification((notification) => {
+                    this.data.reply_count++
+                });
+        },
         mounted() {
             EventBus.$on('dialog-canceled', () => {
               this.dialog.show = false;

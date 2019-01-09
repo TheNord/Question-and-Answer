@@ -37,7 +37,21 @@
                         .delete(`/api/question/${this.questionSlug}/reply/${this.content[index].id}`)
                         .then(res => this.content.splice(index, 1))
                         .catch(error => console.log(error))
-                })
+                });
+
+                Echo.private('App.User.' + User.id())
+                    .notification((notification) => {
+                       this.content.push(notification.reply)
+                    });
+
+                Echo.channel('deleteReplyChannel')
+                    .listen('DeleteReplyEvent', (e) => {
+                        for(let index = 0; index < this.content.length; index++) {
+                            if(this.content[index].id === e.id) {
+                                this.content.splice(index, 1)
+                            }
+                        }
+                    })
             }
         },
     }

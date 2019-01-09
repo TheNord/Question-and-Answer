@@ -3,7 +3,7 @@
         <v-toolbar-side-icon></v-toolbar-side-icon>
         <v-toolbar-title>RealTime Forum</v-toolbar-title>
         <v-spacer></v-spacer>
-        <app-notification v-if="User.loggedIn()"></app-notification>
+        <app-notification v-if="loggedIn"></app-notification>
         <div class="hidden-sm-and-down">
 
             <router-link
@@ -37,6 +37,11 @@
             EventBus.$on('logout',() => {
                 User.logout()
             })
+        },
+        computed: {
+            loggedIn() {
+                return User.loggedIn();
+            }
         },
         components: {
             AppNotification
