@@ -1928,7 +1928,7 @@ __webpack_require__.r(__webpack_exports__);
         _this2.unread = res.data.unread;
         _this2.unreadCount = res.data.unread.length;
       }).catch(function (error) {
-        return console.log(error);
+        return Exception.handle(error);
       });
     },
     readIt: function readIt(notification) {
@@ -107242,6 +107242,52 @@ function () {
 
 /***/ }),
 
+/***/ "./resources/js/Helpers/Exception.js":
+/*!*******************************************!*\
+  !*** ./resources/js/Helpers/Exception.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _User__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./User */ "./resources/js/Helpers/User.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Exception =
+/*#__PURE__*/
+function () {
+  function Exception() {
+    _classCallCheck(this, Exception);
+  }
+
+  _createClass(Exception, [{
+    key: "handle",
+    value: function handle(error) {
+      this.isError(error.response.data.error);
+    }
+  }, {
+    key: "isError",
+    value: function isError(error) {
+      if (error === 'Token is Expired' || error === 'Token is invalid' || error === 'Authorization Token not found') {
+        _User__WEBPACK_IMPORTED_MODULE_0__["default"].logout();
+      }
+    }
+  }]);
+
+  return Exception;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Exception = new Exception());
+
+/***/ }),
+
 /***/ "./resources/js/Helpers/Token.js":
 /*!***************************************!*\
   !*** ./resources/js/Helpers/Token.js ***!
@@ -107284,7 +107330,32 @@ function () {
   }, {
     key: "decode",
     value: function decode(payload) {
-      return JSON.parse(atob(payload));
+      if (this.isBase64(payload)) {
+        return JSON.parse(atob(payload));
+      }
+
+      return false;
+    }
+  }, {
+    key: "checkToken",
+    value: function checkToken() {
+      axios.post('/api/auth/check').then(function (res) {
+        if (res.data === 'Success') {
+          return true;
+        }
+      }).catch(function (error) {
+        User.logout();
+        return false;
+      });
+    }
+  }, {
+    key: "isBase64",
+    value: function isBase64(str) {
+      try {
+        return atob(str);
+      } catch (err) {
+        return false;
+      }
     }
   }]);
 
@@ -107350,7 +107421,7 @@ function () {
       var storedToken = _AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken();
 
       if (storedToken) {
-        return !!_Token__WEBPACK_IMPORTED_MODULE_0__["default"].isValid(storedToken);
+        return _Token__WEBPACK_IMPORTED_MODULE_0__["default"].isValid(storedToken) ? true : this.logout();
       }
 
       return false;
@@ -107359,6 +107430,13 @@ function () {
     key: "loggedIn",
     value: function loggedIn() {
       return this.hasToken();
+    }
+  }, {
+    key: "checkAuth",
+    value: function checkAuth() {
+      if (_AppStorage__WEBPACK_IMPORTED_MODULE_1__["default"].getToken()) {
+        _Token__WEBPACK_IMPORTED_MODULE_0__["default"].checkToken();
+      }
     }
   }, {
     key: "logout",
@@ -107475,10 +107553,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! marked */ "./node_modules/marked/lib/marked.js");
 /* harmony import */ var marked__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(marked__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Helpers_User__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Helpers/User */ "./resources/js/Helpers/User.js");
-/* harmony import */ var _Router_router_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Router/router.js */ "./resources/js/Router/router.js");
+/* harmony import */ var _Helpers_Exception__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Helpers/Exception */ "./resources/js/Helpers/Exception.js");
+/* harmony import */ var _Router_router_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Router/router.js */ "./resources/js/Router/router.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
 
 
 
@@ -107488,14 +107568,16 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuetify__WEBPACK_IMPORTED_MODULE_
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_simplemde__WEBPACK_IMPORTED_MODULE_2___default.a);
 window.md = marked__WEBPACK_IMPORTED_MODULE_3___default.a;
 window.User = _Helpers_User__WEBPACK_IMPORTED_MODULE_4__["default"];
-window.EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a(); // const files = require.context('./', true, /\.vue$/i)
+window.Exception = _Helpers_Exception__WEBPACK_IMPORTED_MODULE_5__["default"];
+window.EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
+_Helpers_User__WEBPACK_IMPORTED_MODULE_4__["default"].checkAuth(); // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('AppHome', __webpack_require__(/*! ./components/AppHome.vue */ "./resources/js/components/AppHome.vue").default);
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
-  router: _Router_router_js__WEBPACK_IMPORTED_MODULE_5__["default"]
+  router: _Router_router_js__WEBPACK_IMPORTED_MODULE_6__["default"]
 });
 
 /***/ }),

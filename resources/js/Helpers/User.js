@@ -23,7 +23,7 @@ class User {
         const storedToken = AppStorage.getToken();
 
         if (storedToken) {
-            return !!Token.isValid(storedToken)
+            return Token.isValid(storedToken) ? true : this.logout()
         }
 
         return false;
@@ -33,8 +33,14 @@ class User {
         return this.hasToken()
     }
 
+    checkAuth() {
+        if (AppStorage.getToken()) {
+            Token.checkToken()
+        }
+    }
+
     logout() {
-        AppStorage.clear()
+        AppStorage.clear();
         window.location = '/forum'
     }
 

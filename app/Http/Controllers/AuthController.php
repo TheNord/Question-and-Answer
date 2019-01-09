@@ -100,4 +100,13 @@ class AuthController extends Controller
             'user' => auth()->user()->name
         ]);
     }
+
+    /**
+     * Проверка токена авторизации
+     * Если пользователь прошел проверку через миддлвер, то возвращаем true
+     */
+    public function check()
+    {
+        return response('Success', 200);
+    }
 }

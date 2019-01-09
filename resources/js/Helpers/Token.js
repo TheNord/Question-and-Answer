@@ -1,7 +1,7 @@
 class Token {
     isValid(token) {
         const payload = this.payload(token);
-        if(payload) {
+        if (payload) {
             return payload.iss === "http://localhost:8000/api/auth/login" || "http://localhost:8000/api/auth/signup";
         }
 
@@ -14,7 +14,32 @@ class Token {
     }
 
     decode(payload) {
-        return JSON.parse(atob(payload))
+        if (this.isBase64(payload)) {
+            return JSON.parse(atob(payload))
+        }
+        return false
+    }
+
+    checkToken() {
+        axios
+            .post('/api/auth/check')
+            .then(res => {
+                if (res.data === 'Success') {
+                    return true
+                }
+            })
+            .catch(error => {
+                User.logout();
+                return false
+            })
+    }
+
+    isBase64(str) {
+        try {
+            return atob(str)
+        } catch (err) {
+            return false;
+        }
     }
 }
 

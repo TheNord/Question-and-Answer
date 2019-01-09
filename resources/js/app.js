@@ -7,14 +7,18 @@ import Vuetify from 'vuetify'
 import VueSimplemde from 'vue-simplemde'
 import md from 'marked'
 import User from './Helpers/User'
+import Exception from "./Helpers/Exception";
 
 Vue.use(Vuetify);
 Vue.use(VueSimplemde);
 
 window.md = md;
 window.User = User;
+window.Exception = Exception;
 
 window.EventBus = new Vue();
+
+User.checkAuth();
 
 
 // const files = require.context('./', true, /\.vue$/i)
