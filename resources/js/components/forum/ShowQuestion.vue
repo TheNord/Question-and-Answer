@@ -52,6 +52,19 @@
                 .notification((notification) => {
                     this.data.reply_count++
                 });
+
+            Echo.channel('deleteReplyChannel')
+                .listen('DeleteReplyEvent', (e) => {
+                    this.data.reply_count--
+                });
+
+            EventBus.$on('newReply', () => {
+                this.data.reply_count++
+            });
+
+            EventBus.$on('deleteReply', () => {
+                this.data.reply_count--
+            })
         },
         mounted() {
             EventBus.$on('dialog-canceled', () => {

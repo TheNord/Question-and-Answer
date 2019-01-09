@@ -2471,6 +2471,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2485,6 +2491,11 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.listen();
     this.getQuestion();
+  },
+  computed: {
+    loggedIn: function loggedIn() {
+      return User.loggedIn();
+    }
   },
   methods: {
     listen: function listen() {
@@ -2577,6 +2588,15 @@ __webpack_require__.r(__webpack_exports__);
 
     Echo.private('App.User.' + User.id()).notification(function (notification) {
       _this.data.reply_count++;
+    });
+    Echo.channel('deleteReplyChannel').listen('DeleteReplyEvent', function (e) {
+      _this.data.reply_count--;
+    });
+    EventBus.$on('newReply', function () {
+      _this.data.reply_count++;
+    });
+    EventBus.$on('deleteReply', function () {
+      _this.data.reply_count--;
     });
   },
   mounted: function mounted() {
@@ -21509,7 +21529,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -68794,7 +68814,27 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("new-reply", { attrs: { "question-slug": _vm.question.slug } })
+          _vm.loggedIn
+            ? _c("new-reply", { attrs: { "question-slug": _vm.question.slug } })
+            : _c(
+                "div",
+                [
+                  _c(
+                    "v-container",
+                    [
+                      _c("router-link", { attrs: { to: "/login" } }, [
+                        _vm._v("Login")
+                      ]),
+                      _vm._v(" in to Reply or\n            "),
+                      _c("router-link", { attrs: { to: "/signup" } }, [
+                        _vm._v("sign up")
+                      ])
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
         ],
         1
       )
