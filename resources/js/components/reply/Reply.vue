@@ -4,6 +4,8 @@
             <v-card-title>
                 <div class="headline">{{data.user}}</div>
                 <div class="ml-2">said {{data.created_at}}</div>
+                <v-spacer></v-spacer>
+                <like :data="data"></like>
             </v-card-title>
             <v-divider></v-divider>
             <edit-reply
@@ -30,6 +32,7 @@
 
 <script>
     import EditReply from './EditReply';
+    import Like from '../likes/Like';
 
     export default {
         props: ['data', 'index'],
@@ -70,7 +73,8 @@
             }
         },
         components: {
-            EditReply
+            EditReply,
+            Like
         }
     }
 </script>

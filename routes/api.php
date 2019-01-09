@@ -14,6 +14,9 @@ Route::group([
 
 });
 
+Route::post('/notifications', 'NotificationController@notificationCounts');
+Route::post('/notifications/markAsRead', 'NotificationController@markAsRead');
+
 Route::apiResource('/question', 'QuestionController');
 Route::apiResource('/category', 'CategoryController');
 Route::apiResource('/question/{question}/reply', 'ReplyController');
