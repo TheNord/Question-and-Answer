@@ -21,11 +21,12 @@
             <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
 
             <markdown-editor v-model="form.body"></markdown-editor>
-            <span class="red--text" v-if="errors.body">{{ errors.body[0] }}</span>
+            <span class="red--text" v-if="errors.body">{{ errors.body[0] }} <br></span>
 
             <v-btn
                     color="green"
                     type="submit"
+                    :disabled="disabled"
             >Create</v-btn>
         </v-form>
     </v-container>
@@ -58,6 +59,11 @@
                     .catch(error => this.errors = error.response.data.errors)
             }
         },
+        computed:{
+            disabled() {
+                return !(this.form.title && this.form.category_id && this.form.body)
+            }
+        }
     }
 </script>
 

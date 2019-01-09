@@ -48,7 +48,7 @@
                 axios
                     .put(`/api/question/${this.form.slug}`, this.form)
                     .then(res => this.cancel())
-                    .catch(error => console.log(error))
+                    .catch(error => this.errors = error.response.data.errors)
             }
         },
     }

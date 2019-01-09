@@ -9,8 +9,8 @@
             ></v-text-field>
             <span class="red--text" v-if="errors.name">{{ errors.name[0] }} <br></span>
 
-            <v-btn type="submit" color="pink" v-if="editSlug">Update</v-btn>
-            <v-btn type="submit" color="teal" v-else>Create</v-btn>
+            <v-btn type="submit" color="pink" v-if="editSlug" :disabled="!form.name">Update</v-btn>
+            <v-btn type="submit" color="teal" v-else :disabled="!form.name">Create</v-btn>
         </v-form>
 
         <v-card class="mt-4">

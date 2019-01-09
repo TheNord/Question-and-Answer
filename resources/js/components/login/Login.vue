@@ -8,6 +8,7 @@
                     type="email"
                     required
             ></v-text-field>
+            <span class="red--text" v-if="errors.email">{{ errors.email[0] }}</span>
 
             <v-text-field
                     v-model="form.password"
@@ -15,6 +16,7 @@
                     type="password"
                     required
             ></v-text-field>
+            <span class="red--text" v-if="errors.password">{{ errors.password[0] }} <br></span>
 
             <v-btn
                     color="green"
@@ -37,7 +39,8 @@
                 form: {
                     email: null,
                     password: null
-                }
+                },
+                errors: {}
             }
         },
         created() {
@@ -47,7 +50,10 @@
         },
         methods: {
             login() {
-                User.login(this.form);
+                axios
+                    .post('/api/auth/login', this.form)
+                    .then(res => User.responseAfterLogin(res))
+                    .catch(error => this.errors = error.response.data.errors)
             }
         }
     }
