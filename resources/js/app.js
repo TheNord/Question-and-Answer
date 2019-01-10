@@ -8,9 +8,13 @@ import VueSimplemde from 'vue-simplemde'
 import md from 'marked'
 import User from './Helpers/User'
 import Exception from "./Helpers/Exception";
+import VueToasted from 'vue-toasted';
 
 Vue.use(Vuetify);
 Vue.use(VueSimplemde);
+Vue.use(VueToasted, {
+    iconPack : 'material'
+});
 
 window.md = md;
 window.User = User;

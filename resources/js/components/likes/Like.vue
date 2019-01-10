@@ -41,13 +41,31 @@
                 axios
                     .post(`/api/like/${this.data.id}`)
                     .then(res => this.count++)
-                    .catch(error => console.log(error))
+                    .catch(error => {
+                        let toast = this.$toasted.show(error.response.data.error, {
+                            theme: "bubble",
+                            position: "bottom-left",
+                            duration : 5000,
+                            icon : {
+                                name : 'error'
+                            }
+                        });
+                    })
             },
             decr() {
                 axios
                     .delete(`/api/like/${this.data.id}`)
                     .then(res => this.count--)
-                    .catch(error => console.log(error))
+                    .catch(error => {
+                        let toast = this.$toasted.show(error.response.data.error, {
+                            theme: "bubble",
+                            position: "bottom-left",
+                            duration : 5000,
+                            icon : {
+                                name : 'error'
+                            }
+                        });
+                    })
             }
         },
     }
