@@ -54,7 +54,7 @@ class QuestionController extends Controller
         try {
             $this->checkAccess($question->user_id);
             $question->delete();
-            return response(null, 204);
+            return response('Deleted', 200);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
         }

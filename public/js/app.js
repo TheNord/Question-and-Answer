@@ -1801,13 +1801,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['dialog'],
+  props: ['alert'],
   methods: {
     cancel: function cancel() {
-      EventBus.$emit('dialog-canceled');
+      EventBus.$emit('alert-canceled');
     },
     confirm: function confirm() {
-      EventBus.$emit('dialog-confirmed');
+      EventBus.$emit('alert-confirmed');
     }
   }
 });
@@ -1903,7 +1903,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       read: {},
       unread: {},
-      unreadCount: 0
+      unreadCount: 0,
+      sound: 'http://soundbible.com/mp3/Air%20Plane%20Ding-SoundBible.com-496729130.mp3'
     };
   },
   created: function created() {
@@ -1917,6 +1918,8 @@ __webpack_require__.r(__webpack_exports__);
       _this.unread.unshift(notification);
 
       _this.unreadCount++;
+
+      _this.playSound();
     });
   },
   methods: {
@@ -1945,6 +1948,10 @@ __webpack_require__.r(__webpack_exports__);
       }).catch(function (error) {
         return console.log(error);
       });
+    },
+    playSound: function playSound() {
+      var alert = new Audio(this.sound);
+      alert.play();
     }
   },
   computed: {
@@ -2610,7 +2617,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       own: User.own(this.data.user_id),
-      dialog: {
+      slug: this.data.slug,
+      deleteAlert: {
         show: false,
         header: 'Waring',
         text: 'Do you really want to delete the question?'
@@ -2636,11 +2644,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this2 = this;
 
-    EventBus.$on('dialog-canceled', function () {
-      _this2.dialog.show = false;
+    EventBus.$on('alert-canceled', function () {
+      _this2.deleteAlert.show = false;
     });
-    EventBus.$on('dialog-confirmed', function () {
-      _this2.dialog.show = false;
+    EventBus.$on('alert-confirmed', function () {
+      _this2.deleteAlert.show = false;
 
       _this2.destroy();
     });
@@ -2657,7 +2665,7 @@ __webpack_require__.r(__webpack_exports__);
     destroy: function destroy() {
       var _this3 = this;
 
-      axios.delete("/api/question/".concat(this.data.slug)).then(function (res) {
+      axios.delete("/api/question/".concat(this.slug)).then(function (res) {
         return _this3.$router.push('/forum');
       }).catch(function (error) {
         return console.log(error);
@@ -21439,7 +21447,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -21591,7 +21599,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -68053,11 +68061,11 @@ var render = function() {
         {
           attrs: { "max-width": "290" },
           model: {
-            value: _vm.dialog.show,
+            value: _vm.alert.show,
             callback: function($$v) {
-              _vm.$set(_vm.dialog, "show", $$v)
+              _vm.$set(_vm.alert, "show", $$v)
             },
-            expression: "dialog.show"
+            expression: "alert.show"
           }
         },
         [
@@ -68065,13 +68073,13 @@ var render = function() {
             "v-card",
             [
               _c("v-card-title", { staticClass: "headline" }, [
-                _vm._v(_vm._s(_vm.dialog.header))
+                _vm._v(_vm._s(_vm.alert.header))
               ]),
               _vm._v(" "),
               _c("v-card-text", [
                 _vm._v(
                   "\n                " +
-                    _vm._s(_vm.dialog.text) +
+                    _vm._s(_vm.alert.text) +
                     "\n            "
                 )
               ]),
@@ -68307,11 +68315,11 @@ var render = function() {
         { attrs: { "align-center": "", column: "", "justify-center": "" } },
         [
           _c("h1", { staticClass: "display-4 font-weight-thin mb-3" }, [
-            _vm._v("RealTime SPA")
+            _vm._v("Question & Answer")
           ]),
           _vm._v(" "),
           _c("h2", { staticClass: "headline" }, [
-            _vm._v("Build your application today!")
+            _vm._v("We have the answer to almost any questions...")
           ])
         ]
       )
@@ -68353,7 +68361,7 @@ var render = function() {
           _c(
             "router-link",
             { staticClass: "white--text home-link", attrs: { to: "/" } },
-            [_vm._v("RealTime Forum")]
+            [_vm._v("Question & Answer")]
           )
         ],
         1
@@ -69041,7 +69049,7 @@ var render = function() {
         "v-container",
         { attrs: { fluid: "" } },
         [
-          _c("alert", { attrs: { dialog: _vm.dialog } }),
+          _c("alert", { attrs: { alert: _vm.deleteAlert } }),
           _vm._v(" "),
           _c(
             "v-card-title",
@@ -69088,11 +69096,10 @@ var render = function() {
           _vm.own
             ? _c(
                 "v-card-actions",
-                { on: { click: _vm.edit } },
                 [
                   _c(
                     "v-btn",
-                    { attrs: { icon: "", small: "" } },
+                    { attrs: { icon: "", small: "" }, on: { click: _vm.edit } },
                     [
                       _c("v-icon", { attrs: { color: "orange" } }, [
                         _vm._v("edit")
@@ -69107,7 +69114,7 @@ var render = function() {
                       attrs: { icon: "", small: "" },
                       on: {
                         click: function($event) {
-                          _vm.dialog.show = true
+                          _vm.deleteAlert.show = true
                         }
                       }
                     },

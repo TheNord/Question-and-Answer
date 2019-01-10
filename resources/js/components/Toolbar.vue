@@ -2,7 +2,7 @@
     <v-toolbar color="indigo" dark>
         <v-toolbar-side-icon></v-toolbar-side-icon>
         <v-toolbar-title>
-            <router-link class="white--text home-link" to="/">RealTime Forum</router-link>
+            <router-link class="white--text home-link" to="/">Question & Answer</router-link>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <app-notification v-if="loggedIn"></app-notification>

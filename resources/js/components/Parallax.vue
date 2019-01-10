@@ -5,8 +5,8 @@
                 column
                 justify-center
         >
-            <h1 class="display-4 font-weight-thin mb-3">RealTime SPA</h1>
-            <h2 class="headline">Build your application today!</h2>
+            <h1 class="display-4 font-weight-thin mb-3">Question & Answer</h1>
+            <h2 class="headline">We have the answer to almost any questions...</h2>
         </v-layout>
     </v-parallax>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-container fluid>
-            <alert :dialog="dialog"></alert>
+            <alert :alert="deleteAlert"></alert>
             <v-card-title>
                 <div>
                     <div class="headline">
@@ -20,11 +20,11 @@
             </v-card-title>
 
             <v-card-text v-html="body"></v-card-text>
-            <v-card-actions v-if="own" @click="edit">
-                <v-btn icon small>
+            <v-card-actions v-if="own">
+                <v-btn icon small @click="edit">
                     <v-icon color="orange">edit</v-icon>
                 </v-btn>
-                <v-btn icon small @click="dialog.show = true">
+                <v-btn icon small @click="deleteAlert.show = true">
                     <v-icon color="red">delete</v-icon>
                 </v-btn>
             </v-card-actions>
@@ -40,7 +40,8 @@
         data() {
             return {
                 own: User.own(this.data.user_id),
-                dialog: {
+                slug: this.data.slug,
+                deleteAlert: {
                     show: false,
                     header: 'Waring',
                     text: 'Do you really want to delete the question?'
@@ -67,12 +68,12 @@
             })
         },
         mounted() {
-            EventBus.$on('dialog-canceled', () => {
-              this.dialog.show = false;
+            EventBus.$on('alert-canceled', () => {
+              this.deleteAlert.show = false;
             });
 
-            EventBus.$on('dialog-confirmed', () => {
-                this.dialog.show = false;
+            EventBus.$on('alert-confirmed', () => {
+                this.deleteAlert.show = false;
                 this.destroy()
             });
         },
@@ -88,7 +89,7 @@
             },
             destroy() {
                 axios
-                    .delete(`/api/question/${this.data.slug}`)
+                    .delete(`/api/question/${this.slug}`)
                     .then(res => this.$router.push('/forum'))
                     .catch(error => console.log(error))
             }

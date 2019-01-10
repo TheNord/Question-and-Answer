@@ -1,14 +1,14 @@
 <template>
     <v-layout row justify-center>
         <v-dialog
-                v-model="dialog.show"
+                v-model="alert.show"
                 max-width="290"
         >
             <v-card>
-                <v-card-title class="headline">{{dialog.header}}</v-card-title>
+                <v-card-title class="headline">{{alert.header}}</v-card-title>
 
                 <v-card-text>
-                    {{dialog.text}}
+                    {{alert.text}}
                 </v-card-text>
 
                 <v-card-actions>
@@ -37,13 +37,13 @@
 
 <script>
     export default {
-        props: ['dialog'],
+        props: ['alert'],
         methods: {
             cancel() {
-                EventBus.$emit('dialog-canceled')
+                EventBus.$emit('alert-canceled')
             },
             confirm() {
-                EventBus.$emit('dialog-confirmed')
+                EventBus.$emit('alert-confirmed')
             }
         },
     }
