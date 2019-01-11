@@ -1,39 +1,51 @@
 <template>
     <v-card>
-        <v-container fluid>
-            <alert :alert="deleteAlert"></alert>
-            <v-card-title>
-                <div>
-                    <div class="headline">
-                        {{ data.title }}
-                    </div>
-                    <span class="grey--text">{{data.user}} said {{data.created_at}}</span>
-                    <span
-                          class="grey--text"
-                          v-if="data.updated_at !== data.created_at"
-                    >
-                        (updated {{data.updated_at}})
-                    </span>
-                </div>
-                <v-spacer></v-spacer>
-                <v-btn color="teal" dark>{{data.reply_count}} Replies</v-btn>
-            </v-card-title>
+        <v-container fluid grid-list-md>
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <alert :alert="deleteAlert"></alert>
+                    <v-card-title>
+                        <div>
+                            <div class="headline">
+                                {{ data.title }}
+                            </div>
+                            <span class="grey--text">{{data.user}} asked {{data.created_at}}</span>
+                            <span
+                                    class="grey--text"
+                                    v-if="data.updated_at !== data.created_at"
+                            >
+                                (updated {{data.updated_at}})
+                            </span>
+                        </div>
+                        <v-spacer></v-spacer>
+                        <v-btn color="teal" dark>{{data.reply_count}} Replies</v-btn>
+                    </v-card-title>
+                    <v-divider></v-divider>
+                </v-flex>
 
-            <v-card-text v-html="body"></v-card-text>
-            <v-card-actions v-if="own">
-                <v-btn icon small @click="edit">
-                    <v-icon color="orange">edit</v-icon>
-                </v-btn>
-                <v-btn icon small @click="deleteAlert.show = true">
-                    <v-icon color="red">delete</v-icon>
-                </v-btn>
-            </v-card-actions>
+                <vote :data="data"></vote>
+
+                <v-flex xs11>
+                    <v-card-text v-html="body"></v-card-text>
+
+                    <v-card-actions v-if="own">
+                        <v-btn icon small @click="edit">
+                            <v-icon color="orange">edit</v-icon>
+                        </v-btn>
+                        <v-btn icon small @click="deleteAlert.show = true">
+                            <v-icon color="red">delete</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+                </v-flex>
+
+            </v-layout>
         </v-container>
     </v-card>
 </template>
 
 <script>
     import alert from '../Alert';
+    import Vote from '../votes/Vote'
 
     export default {
         props: ['data'],
@@ -69,7 +81,7 @@
         },
         mounted() {
             EventBus.$on('alert-canceled', () => {
-              this.deleteAlert.show = false;
+                this.deleteAlert.show = false;
             });
 
             EventBus.$on('alert-confirmed', () => {
@@ -92,10 +104,16 @@
                     .delete(`/api/question/${this.slug}`)
                     .then(res => this.$router.push('/forum'))
                     .catch(error => console.log(error))
+            },
+            voteUp() {
+
+            },
+            voteDwn() {
+
             }
         },
         components: {
-            alert
+            alert, Vote
         }
     }
 </script>

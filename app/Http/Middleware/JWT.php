@@ -13,7 +13,7 @@ class JWT
             $user = JWTAuth::parseToken()->authenticate();
         } catch (\Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['error' => 'Token is invalid'], 400);
+                return response()->json(['error' => 'Authorization required'], 400);
             }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
                 return response()->json(['error' => 'Token is Expired'], 400);
             }else{

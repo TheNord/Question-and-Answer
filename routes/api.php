@@ -24,3 +24,6 @@ Route::apiResource('/question/{question}/reply', 'ReplyController');
 
 Route::post('/like/{reply}', 'LikeController@likeIt');
 Route::delete('/like/{reply}', 'LikeController@unLikeIt');
+
+Route::post('/voteUp/{question}', 'VoteController@voteUp');
+Route::post('/voteDwn/{question}', 'VoteController@voteDwn');

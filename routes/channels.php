@@ -19,3 +19,7 @@ Broadcast::channel('likeChannel', function () {
     return true;
 });
 
+Broadcast::channel('voteChannel', function () {
+    return true;
+});
+

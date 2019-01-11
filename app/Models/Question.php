@@ -26,6 +26,21 @@ class Question extends Model
         return $this->hasMany(Reply::class);
     }
 
+    public function vote()
+    {
+        return $this->hasMany(Votes::class);
+    }
+
+    public function voteUp()
+    {
+        return $this->hasMany(Votes::class)->where('type', true);
+    }
+
+    public function voteDwn()
+    {
+        return $this->hasMany(Votes::class)->where('type', false);
+    }
+
     protected static function boot()
     {
         parent::boot();
