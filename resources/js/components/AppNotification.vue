@@ -2,19 +2,26 @@
     <div class="text-xs-center">
         <v-menu offset-y>
             <v-btn icon slot="activator">
-                <v-icon :color="color">add_alert</v-icon> {{unreadCount}}
+                <v-icon :color="color">add_alert</v-icon>
+                {{unreadCount}}
             </v-btn>
-            <v-list>
-                <v-list-tile v-for="item in unread" :key="item.id">
-                    <router-link :to="item.path">
-                        <v-list-tile-title @click="readIt(item)">{{item.question}}</v-list-tile-title>
-                    </router-link>
 
-                </v-list-tile>
-                <v-divider></v-divider>
-                <v-list-tile v-for="item in read" :key="item.id">
-                        <v-list-tile-title>{{item.question}}</v-list-tile-title>
-                </v-list-tile>
+            <v-list class="notifications-block">
+                <div v-if="unreadCount > 0">
+                    <h4 class="notification-title">Unread notifications:</h4>
+
+                    <v-list-tile v-for="item in unread" :key="item.id" class="notification-item">
+                        <router-link :to="item.path">
+                            <v-list-tile-title @click="readIt(item)">{{item.question}}</v-list-tile-title>
+                        </router-link>
+                        <span class="notification-item-type"> ({{item.typeNotify}})</span>
+                    </v-list-tile>
+
+                    <v-btn @click="readAll" small color="pink" dark>
+                        Mark All as Read
+                    </v-btn>
+                </div>
+                <span v-else class="notification-title">No unread notifications</span>
             </v-list>
         </v-menu>
     </div>
@@ -23,15 +30,15 @@
 <script>
     export default {
         data() {
-          return {
-              read: {},
-              unread: {},
-              unreadCount: 0,
-              sound: 'http://soundbible.com/mp3/Air%20Plane%20Ding-SoundBible.com-496729130.mp3'
-          }
+            return {
+                read: {},
+                unread: {},
+                unreadCount: 0,
+                sound: 'http://soundbible.com/mp3/Air%20Plane%20Ding-SoundBible.com-496729130.mp3'
+            }
         },
         created() {
-            if(User.loggedIn()){
+            if (User.loggedIn()) {
                 this.getNotifications()
             }
 
@@ -47,7 +54,6 @@
                 axios
                     .post('/api/notifications')
                     .then(res => {
-                        this.read = res.data.read;
                         this.unread = res.data.unread;
                         this.unreadCount = res.data.unread.length
                     })
@@ -58,8 +64,16 @@
                     .post('/api/notifications/markAsRead', {id: notification.id})
                     .then(res => {
                         this.unread.splice(notification, 1);
-                        this.read.push(notification, 1);
-                        this.unreadCount --
+                        this.unreadCount--
+                    })
+                    .catch(error => console.log(error))
+            },
+            readAll() {
+                axios
+                    .post('/api/notifications/markAsReadAll')
+                    .then(res => {
+                        this.unread = [];
+                        this.unreadCount = 0
                     })
                     .catch(error => console.log(error))
             },
@@ -77,5 +91,20 @@
 </script>
 
 <style scoped>
+    .notifications-block {
+        min-width: 400px
+    }
 
+    .notification-title {
+        margin: 5px 0 0 15px
+    }
+
+    .notification-item:not(:last-child) {
+        border-bottom: solid #a5aba5 1px
+    }
+
+    .notification-item-type {
+        font-size: 11px;
+        margin-left: 7px;
+    }
 </style>

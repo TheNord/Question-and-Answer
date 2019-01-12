@@ -17,6 +17,7 @@ Route::group([
 
 Route::post('/notifications', 'NotificationController@notificationCounts');
 Route::post('/notifications/markAsRead', 'NotificationController@markAsRead');
+Route::post('/notifications/markAsReadAll', 'NotificationController@markAsReadAll');
 
 Route::apiResource('/question', 'QuestionController');
 Route::apiResource('/category', 'CategoryController');

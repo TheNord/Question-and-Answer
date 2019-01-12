@@ -15,13 +15,18 @@ class NotificationController extends Controller
     public function notificationCounts()
     {
         return [
-            'read' => NotificationResource::collection(auth()->user()->readNotifications),
-            'unread' => NotificationResource::collection(auth()->user()->unreadNotifications)
+            //'read' => NotificationResource::collection(auth()->user()->readNotifications->sortByDesc('created_at')->splice(0,3)),
+            'unread' => NotificationResource::collection(auth()->user()->unreadNotifications->sortByDesc('created_at')),
         ];
     }
 
     public function markAsRead(Request $request)
     {
         auth()->user()->notifications->where('id', $request->id)->markAsRead();
+    }
+
+    public function markAsReadAll()
+    {
+        auth()->user()->notifications->markAsRead();
     }
 }

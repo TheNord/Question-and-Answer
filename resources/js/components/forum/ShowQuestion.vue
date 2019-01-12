@@ -37,7 +37,6 @@
                         </v-btn>
                     </v-card-actions>
                 </v-flex>
-
             </v-layout>
         </v-container>
     </v-card>
@@ -77,7 +76,7 @@
 
             EventBus.$on('deleteReply', () => {
                 this.data.reply_count--
-            })
+            });
         },
         mounted() {
             EventBus.$on('alert-canceled', () => {
@@ -104,12 +103,6 @@
                     .delete(`/api/question/${this.slug}`)
                     .then(res => this.$router.push('/forum'))
                     .catch(error => console.log(error))
-            },
-            voteUp() {
-
-            },
-            voteDwn() {
-
             }
         },
         components: {

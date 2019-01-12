@@ -29,7 +29,6 @@ class VoteController extends Controller
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
         }
-
     }
 
     public function voteDwn(Question $question)
@@ -57,7 +56,7 @@ class VoteController extends Controller
     {
         $userVoteType = $question->vote()->where('user_id', auth()->id())->pluck('type')->first();
 
-        if(!isset($userVoteType)) {
+        if (!isset($userVoteType)) {
             return;
         }
 

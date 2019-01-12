@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Helpers\NotificationHelper;
 use App\Http\Resources\ReplyResource;
 use App\Models\Reply;
 use Illuminate\Bus\Queueable;
@@ -43,7 +44,9 @@ class NewReplyNotification extends Notification
         return [
             'replyBy' => $this->reply->user->name,
             'question' => $this->reply->question->title,
-            'path' => $this->reply->question->path
+            'path' => $this->reply->question->path,
+            'typeNotify' => NotificationHelper::NEW_MESSAGE,
+            'key' => $this->reply->id
         ];
     }
 
@@ -54,7 +57,8 @@ class NewReplyNotification extends Notification
             'replyBy' => $this->reply->user->name,
             'question' => $this->reply->question->title,
             'path' => $this->reply->question->path,
-            'reply' => new ReplyResource($this->reply)
+            'reply' => new ReplyResource($this->reply),
+            'typeNotify' => NotificationHelper::getFullType(NotificationHelper::NEW_MESSAGE)
         ]);
     }
 }

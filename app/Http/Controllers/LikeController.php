@@ -17,9 +17,7 @@ class LikeController extends Controller
     {
         try {
             $this->checkOwner($reply->user_id);
-            $reply->like()->create([
-                'user_id' => auth()->id()
-            ]);
+            $reply->like()->create(['user_id' => auth()->id()]);
             broadcast(new LikeEvent($reply->id, 1))->toOthers();
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);

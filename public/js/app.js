@@ -1898,6 +1898,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1927,7 +1934,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.post('/api/notifications').then(function (res) {
-        _this2.read = res.data.read;
         _this2.unread = res.data.unread;
         _this2.unreadCount = res.data.unread.length;
       }).catch(function (error) {
@@ -1942,9 +1948,17 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this3.unread.splice(notification, 1);
 
-        _this3.read.push(notification, 1);
-
         _this3.unreadCount--;
+      }).catch(function (error) {
+        return console.log(error);
+      });
+    },
+    readAll: function readAll() {
+      var _this4 = this;
+
+      axios.post('/api/notifications/markAsReadAll').then(function (res) {
+        _this4.unread = [];
+        _this4.unreadCount = 0;
       }).catch(function (error) {
         return console.log(error);
       });
@@ -2622,7 +2636,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2683,9 +2696,7 @@ __webpack_require__.r(__webpack_exports__);
       }).catch(function (error) {
         return console.log(error);
       });
-    },
-    voteUp: function voteUp() {},
-    voteDwn: function voteDwn() {}
+    }
   },
   components: {
     alert: _Alert__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -21584,7 +21595,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.notifications-block[data-v-14f98411] {\n    min-width: 400px\n}\n.notification-title[data-v-14f98411] {\n    margin: 5px 0 0 15px\n}\n.notification-item[data-v-14f98411]:not(:last-child) {\n    border-bottom: solid #a5aba5 1px\n}\n.notification-item-type[data-v-14f98411] {\n    font-size: 11px;\n    margin-left: 7px;\n}\n", ""]);
 
 // exports
 
@@ -21736,7 +21747,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -68409,55 +68420,73 @@ var render = function() {
               _c("v-icon", { attrs: { color: _vm.color } }, [
                 _vm._v("add_alert")
               ]),
-              _vm._v(" " + _vm._s(_vm.unreadCount) + "\n        ")
+              _vm._v("\n            " + _vm._s(_vm.unreadCount) + "\n        ")
             ],
             1
           ),
           _vm._v(" "),
-          _c(
-            "v-list",
-            [
-              _vm._l(_vm.unread, function(item) {
-                return _c(
-                  "v-list-tile",
-                  { key: item.id },
+          _c("v-list", { staticClass: "notifications-block" }, [
+            _vm.unreadCount > 0
+              ? _c(
+                  "div",
                   [
+                    _c("h4", { staticClass: "notification-title" }, [
+                      _vm._v("Unread notifications:")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.unread, function(item) {
+                      return _c(
+                        "v-list-tile",
+                        { key: item.id, staticClass: "notification-item" },
+                        [
+                          _c(
+                            "router-link",
+                            { attrs: { to: item.path } },
+                            [
+                              _c(
+                                "v-list-tile-title",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      _vm.readIt(item)
+                                    }
+                                  }
+                                },
+                                [_vm._v(_vm._s(item.question))]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            { staticClass: "notification-item-type" },
+                            [_vm._v(" (" + _vm._s(item.typeNotify) + ")")]
+                          )
+                        ],
+                        1
+                      )
+                    }),
+                    _vm._v(" "),
                     _c(
-                      "router-link",
-                      { attrs: { to: item.path } },
+                      "v-btn",
+                      {
+                        attrs: { small: "", color: "pink", dark: "" },
+                        on: { click: _vm.readAll }
+                      },
                       [
-                        _c(
-                          "v-list-tile-title",
-                          {
-                            on: {
-                              click: function($event) {
-                                _vm.readIt(item)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(item.question))]
+                        _vm._v(
+                          "\n                    Mark All as Read\n                "
                         )
-                      ],
-                      1
+                      ]
                     )
                   ],
-                  1
+                  2
                 )
-              }),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _vm._l(_vm.read, function(item) {
-                return _c(
-                  "v-list-tile",
-                  { key: item.id },
-                  [_c("v-list-tile-title", [_vm._v(_vm._s(item.question))])],
-                  1
-                )
-              })
-            ],
-            2
-          )
+              : _c("span", { staticClass: "notification-title" }, [
+                  _vm._v("No unread notifications")
+                ])
+          ])
         ],
         1
       )

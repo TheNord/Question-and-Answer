@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Helpers\NotificationHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class NotificationResource extends JsonResource
@@ -18,7 +19,8 @@ class NotificationResource extends JsonResource
             'id' => $this->id,
             'replyBy' => $this->data['replyBy'],
             'question' => $this->data['question'],
-            'path' => $this->data['path']
+            'path' => $this->data['path'],
+            'typeNotify' => NotificationHelper::getFullType($this->data['typeNotify'])
         ];
     }
 }

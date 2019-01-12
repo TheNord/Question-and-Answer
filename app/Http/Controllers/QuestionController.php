@@ -27,9 +27,7 @@ class QuestionController extends Controller
             'body' => 'required|string|min:30',
             'category_id' => 'required'
         ]);
-
         $question = $request->user()->question()->create($request->all());
-
         return response(new QuestionResource($question), 201);
     }
 
@@ -40,13 +38,17 @@ class QuestionController extends Controller
 
     public function update(Request $request, Question $question)
     {
-        $request->validate([
-            'title' => ['required', 'string', 'max:255',  Rule::unique('questions')->ignore($question->id)],
-            'body' => 'required|string|min:30'
-        ]);
-
-        $question->update($request->all());
-        return response('Updated', 202);
+        try {
+            $this->checkAccess($question->user_id);
+            $request->validate([
+                'title' => ['required', 'string', 'max:255', Rule::unique('questions')->ignore($question->id)],
+                'body' => 'required|string|min:30'
+            ]);
+            $question->update($request->all());
+            return response('Updated', 202);
+        } catch (\Exception $e) {
+            return response(['error' => $e->getMessage()], 400);
+        }
     }
 
     public function destroy(Question $question)
@@ -61,8 +63,9 @@ class QuestionController extends Controller
 
     }
 
-    private function checkAccess($id) {
-        if (auth()->id() != $id){
+    private function checkAccess($id)
+    {
+        if (auth()->id() != $id) {
             throw new \Exception('You can only manage your questions.');
         }
 
