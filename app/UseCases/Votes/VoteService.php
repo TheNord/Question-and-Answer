@@ -2,7 +2,7 @@
 
 namespace App\UseCases\Votes;
 
-
+use App\Events\VoteEvent;
 use App\Models\Question;
 
 class VoteService
@@ -17,17 +17,25 @@ class VoteService
 
     public function voteUp(Question $question)
     {
-        return $question->vote()->create([
+        $vote = $question->vote()->create([
             'user_id' => auth()->id(),
             'type' => true
         ]);
+
+        broadcast(new VoteEvent($question->slug, 1))->toOthers();
+
+        return $vote;
     }
 
     public function voteDwn(Question $question)
     {
-        return $question->vote()->create([
+        $vote = $question->vote()->create([
             'user_id' => auth()->id(),
             'type' => false
         ]);
+
+        broadcast(new VoteEvent($question->slug, 0))->toOthers();
+
+        return $vote;
     }
 }

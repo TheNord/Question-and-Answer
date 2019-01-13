@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\CreateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -18,17 +19,12 @@ class CategoryController extends Controller
         return CategoryResource::collection(Category::latest()->get());
     }
 
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|min:3|max:255|unique:categories'
-        ]);
-
         $category = Category::create([
             'name' => $request->name,
             'slug' => str_slug($request->name)
         ]);
-
         return response(new CategoryResource($category), 201);
     }
 

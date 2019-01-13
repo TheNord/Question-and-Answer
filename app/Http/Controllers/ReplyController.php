@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\DeleteReplyEvent;
+use App\Http\Requests\Replies\CreateRequest;
 use App\Http\Resources\ReplyResource;
 use App\Models\Question;
 use App\Models\Reply;
-use App\Notifications\NewReplyNotification;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use App\UseCases\Reply\ReplyService;
 
 class ReplyController extends Controller
 {
-    public function __construct()
+    private $service;
+
+    public function __construct(ReplyService $service)
     {
         $this->middleware('jwt', ['except' => ['index', 'show']]);
+        $this->service = $service;
     }
 
     public function index(Question $question)
@@ -22,19 +23,9 @@ class ReplyController extends Controller
         return ReplyResource::collection($question->replies);
     }
 
-    public function store(Question $question, Request $request)
+    public function store(Question $question, CreateRequest $request)
     {
-        $request->validate([
-            'body' => 'required|string|min:30|max:1000',
-        ]);
-
-        $reply = $question->replies()->create($request->all());
-
-        if ($reply->user_id !== $question->user_id) {
-            $user = $question->user;
-            $user->notify(new NewReplyNotification($reply));
-        }
-
+        $reply = $this->service->create($question, $request);
         return response(['reply' => new ReplyResource($reply)], 201);
     }
 
@@ -43,21 +34,10 @@ class ReplyController extends Controller
         return new ReplyResource($reply);
     }
 
-    public function update(Question $question, Reply $reply, Request $request)
+    public function update(Question $question, Reply $reply, CreateRequest $request)
     {
         try {
-            $this->checkManage($reply);
-
-            $request->validate([
-                'body' => 'required|string|min:30|max:1000',
-            ]);
-
-            $reply->update([
-                'body' => $request->body
-            ]);
-
-            Cache::delete('reply_' .$reply->id);
-
+            $reply = $this->service->edit($reply, $request);
             return response($reply, 200);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
@@ -69,9 +49,7 @@ class ReplyController extends Controller
     {
         try {
             $this->checkManage($reply);
-            $reply->delete();
-            Cache::delete('reply_' .$reply->id);
-            broadcast(new DeleteReplyEvent($reply->id))->toOthers();
+            $this->service->delete($reply);
             return response(null, 204);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);

@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\VoteEvent;
 use App\Models\Question;
 use App\UseCases\Votes\VoteService;
-use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
-    private $repository;
+    private $service;
 
-    public function __construct(VoteService $repository)
+    public function __construct(VoteService $service)
     {
         $this->middleware('jwt');
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     public function voteUp(Question $question)
@@ -22,13 +20,13 @@ class VoteController extends Controller
         try {
             $this->checkOwner($question->user_id);
             $this->checkEarlyVoted($question, true);
-            $this->repository->deleteEarlyVote($question);
-            $this->repository->voteUp($question);
-
-            broadcast(new VoteEvent($question->slug, 1))->toOthers();
+            $this->service->deleteEarlyVote($question);
+            $this->service->voteUp($question);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
         }
+
+        return response(null, 204);
     }
 
     public function voteDwn(Question $question)
@@ -36,13 +34,13 @@ class VoteController extends Controller
         try {
             $this->checkOwner($question->user_id);
             $this->checkEarlyVoted($question, false);
-            $this->repository->deleteEarlyVote($question);
-            $this->repository->voteDwn($question);
-
-            broadcast(new VoteEvent($question->slug, 0))->toOthers();
+            $this->service->deleteEarlyVote($question);
+            $this->service->voteDwn($question);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
         }
+
+        return response(null, 204);
     }
 
     private function checkOwner($id)

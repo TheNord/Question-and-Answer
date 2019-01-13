@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Questions\CreateRequest;
 use App\Http\Resources\QuestionDetailResource;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
@@ -24,13 +25,8 @@ class QuestionController extends Controller
         return QuestionResource::collection(Question::latest()->with('vote')->limit(20)->get());
     }
 
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255|unique:questions',
-            'body' => 'required|string|min:30',
-            'category_id' => 'required'
-        ]);
         $question = $request->user()->question()->create($request->all());
         return response(new QuestionResource($question), 201);
     }
