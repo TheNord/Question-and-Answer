@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuestionDetailResource;
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use App\UseCases\Question\QuestionService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class QuestionController extends Controller
@@ -21,7 +21,7 @@ class QuestionController extends Controller
 
     public function index()
     {
-        return QuestionResource::collection(Question::latest()->get());
+        return QuestionResource::collection(Question::latest()->with('vote')->limit(20)->get());
     }
 
     public function store(Request $request)
@@ -38,7 +38,7 @@ class QuestionController extends Controller
     public function show(Question $question)
     {
         $this->service->addView($question);
-        return new QuestionResource($question);
+        return new QuestionDetailResource($question);
     }
 
     public function update(Request $request, Question $question)

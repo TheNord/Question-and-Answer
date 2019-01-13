@@ -3035,9 +3035,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['reply'],
+  props: ['data'],
   data: function data() {
     return {
       errors: {}
@@ -3045,7 +3044,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     update: function update() {
-      EventBus.$emit('updateReply', this.reply.reply);
+      var _this = this;
+
+      var slug = this.data.question_slug;
+      var id = this.data.id;
+      var reply = this.data.reply;
+      axios.put("/api/question/".concat(slug, "/reply/").concat(id), {
+        body: reply
+      }).then(function (res) {
+        return _this.cancelEditing();
+      }).catch(function (error) {
+        return _this.errors = error.response.data.errors;
+      });
     },
     cancelEditing: function cancelEditing() {
       EventBus.$emit('cancelEditing');
@@ -3234,9 +3244,6 @@ __webpack_require__.r(__webpack_exports__);
     EventBus.$on('cancelEditing', function () {
       _this.editing = false;
     });
-    EventBus.$on('updateReply', function (reply) {
-      _this.update(reply);
-    });
   },
   computed: {
     own: function own() {
@@ -3252,17 +3259,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     edit: function edit() {
       this.editing = true;
-    },
-    update: function update(reply) {
-      var _this2 = this;
-
-      axios.put("/api/question/".concat(this.data.question_slug, "/reply/").concat(this.data.id), {
-        body: reply
-      }).then(function (res) {
-        return _this2.editing = false;
-      }).catch(function (error) {
-        return _this2.errors = error.response.data.errors;
-      });
     }
   },
   components: {
@@ -21896,7 +21892,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -69822,11 +69818,11 @@ var render = function() {
         [
           _c("markdown-editor", {
             model: {
-              value: _vm.reply.reply,
+              value: _vm.data.reply,
               callback: function($$v) {
-                _vm.$set(_vm.reply, "reply", $$v)
+                _vm.$set(_vm.data, "reply", $$v)
               },
-              expression: "reply.reply"
+              expression: "data.reply"
             }
           }),
           _vm._v(" "),
@@ -70011,7 +70007,7 @@ var render = function() {
           _c("v-divider"),
           _vm._v(" "),
           _vm.editing
-            ? _c("edit-reply", { attrs: { reply: _vm.data } })
+            ? _c("edit-reply", { attrs: { data: _vm.data } })
             : _vm._e(),
           _vm._v(" "),
           _vm.errors.body

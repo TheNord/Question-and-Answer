@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\Reply;
 use App\Notifications\NewReplyNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ReplyController extends Controller
 {
@@ -55,6 +56,8 @@ class ReplyController extends Controller
                 'body' => $request->body
             ]);
 
+            Cache::delete('reply_' .$reply->id);
+
             return response($reply, 200);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
@@ -67,6 +70,7 @@ class ReplyController extends Controller
         try {
             $this->checkManage($reply);
             $reply->delete();
+            Cache::delete('reply_' .$reply->id);
             broadcast(new DeleteReplyEvent($reply->id))->toOthers();
             return response(null, 204);
         } catch (\Exception $e) {
