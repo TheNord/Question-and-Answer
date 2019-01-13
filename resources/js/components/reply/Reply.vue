@@ -10,7 +10,7 @@
             <v-divider></v-divider>
             <edit-reply
                     v-if="editing"
-                    :reply="data"
+                    :data="data"
             ></edit-reply>
             <span class="red--text" v-if="errors.body">{{ errors.body[0] }}</span>
             <div v-else>
@@ -46,9 +46,6 @@
             EventBus.$on('cancelEditing', () => {
                 this.editing = false
             });
-            EventBus.$on('updateReply', (reply) => {
-                this.update(reply);
-            })
         },
         computed: {
             own() {
@@ -64,12 +61,6 @@
             },
             edit() {
                 this.editing = true
-            },
-            update(reply) {
-                axios
-                    .put(`/api/question/${this.data.question_slug}/reply/${this.data.id}`, {body: reply})
-                    .then(res => this.editing = false)
-                    .catch(error => this.errors = error.response.data.errors)
             }
         },
         components: {
