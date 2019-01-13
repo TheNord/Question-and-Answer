@@ -2485,6 +2485,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['question']
 });
@@ -2592,6 +2621,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Alert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Alert */ "./resources/js/components/Alert.vue");
 /* harmony import */ var _votes_Vote__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../votes/Vote */ "./resources/js/components/votes/Vote.vue");
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21728,7 +21763,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.rating[data-v-7de69e3f], .answers[data-v-7de69e3f], .views[data-v-7de69e3f] {\n    display: inline-block;\n    height: 38px;\n    min-width: 38px;\n    margin: 0 7px 0 0;\n    font-size: 11px;\n    color: #565c61;\n    padding: 7px 6px;\n    text-align: center;\n}\n.count[data-v-7de69e3f] {\n    font-size: 22px;\n    font-weight: 300;\n    color: #4d4f52;\n    margin-bottom: 4px;\n}\n.question-stat[data-v-7de69e3f] {\n    padding-top: 19px;\n    padding-left: 16px;\n}\n.question-tag[data-v-7de69e3f] {\n    position: relative;\n    display: inline-block;\n    padding: .4em .5em;\n    margin: 2px 2px 2px 0;\n    font-size: 11px;\n    line-height: 1;\n    white-space: nowrap;\n    text-decoration: none;\n    text-align: center;\n    border-width: 1px;\n    border-style: solid;\n    border-radius: 3px;\n    transition: all .15s ease-in-out;\n\n    color: #39739d;\n    background-color: #E1ECF4;\n    border-color: #E1ECF4;\n}\n.question-tags[data-v-7de69e3f] {\n    padding-top: 12px;\n    padding-left: 18px;\n}\n.v-card[data-v-7de69e3f]{\n    margin-bottom: 20px;\n}\n", ""]);
 
 // exports
 
@@ -21747,7 +21782,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.views[data-v-f2961d48] {\n    font-size: 30px;\n}\n.answers[data-v-f2961d48] {\n    font-size: 26px;\n}\n.count[data-v-f2961d48] {\n    font-size: 15px;\n}\n", ""]);
 
 // exports
 
@@ -69136,38 +69171,127 @@ var render = function() {
     "v-card",
     { staticClass: "mt-2" },
     [
-      _c("v-card-title", { attrs: { "primary-title": "" } }, [
-        _c("div", [
+      _c(
+        "v-layout",
+        { attrs: { row: "", wrap: "" } },
+        [
+          _c("v-flex", { attrs: { xs2: "" } }, [
+            _c("div", { staticClass: "question-stat" }, [
+              _c("div", { staticClass: "rating" }, [
+                _c("div", { staticClass: "count" }, [
+                  _vm._v(_vm._s(_vm.question.vote_count))
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v("rating")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "answers" }, [
+                _c("div", { staticClass: "count" }, [
+                  _vm._v(_vm._s(_vm.question.reply_count))
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v("answers")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "views" }, [
+                _c("div", { staticClass: "count" }, [
+                  _vm._v(_vm._s(_vm.question.views))
+                ]),
+                _vm._v(" "),
+                _c("div", [_vm._v("views")])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "question-tags" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "question-tag",
+                    attrs: { to: _vm.question.path }
+                  },
+                  [_vm._v("laravel")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "question-tag",
+                    attrs: { to: _vm.question.path }
+                  },
+                  [_vm._v("php")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "question-tag",
+                    attrs: { to: _vm.question.path }
+                  },
+                  [_vm._v("javascript")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "question-tag",
+                    attrs: { to: _vm.question.path }
+                  },
+                  [_vm._v("vuejs")]
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
           _c(
-            "h3",
-            { staticClass: "headline mb-0" },
+            "v-flex",
+            { attrs: { xs10: "" } },
             [
-              _c("router-link", { attrs: { to: _vm.question.path } }, [
+              _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                _c("div", [
+                  _c(
+                    "h3",
+                    { staticClass: "headline mb-0" },
+                    [
+                      _c("router-link", { attrs: { to: _vm.question.path } }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.question.title) +
+                            "\n                        "
+                        )
+                      ])
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "grey--text" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.question.user) +
+                        " said\n                        " +
+                        _vm._s(_vm.question.created_at) +
+                        "\n                    "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("v-card-text", [
                 _vm._v(
-                  "\n                    " +
-                    _vm._s(_vm.question.title) +
-                    "\n                "
+                  "\n                " +
+                    _vm._s(_vm.question.body) +
+                    "\n            "
                 )
               ])
             ],
             1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "grey--text" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.question.user) +
-                " said\n                " +
-                _vm._s(_vm.question.created_at) +
-                "\n            "
-            )
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("v-card-text", [
-        _vm._v("\n        " + _vm._s(_vm.question.body) + "\n    ")
-      ])
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -69292,23 +69416,57 @@ var render = function() {
                               " asked " +
                               _vm._s(_vm.data.created_at)
                           )
-                        ]),
-                        _vm._v(" "),
-                        _vm.data.updated_at !== _vm.data.created_at
-                          ? _c("span", { staticClass: "grey--text" }, [
-                              _vm._v(
-                                "\n                            (updated " +
-                                  _vm._s(_vm.data.updated_at) +
-                                  ")\n                        "
-                              )
-                            ])
-                          : _vm._e()
+                        ])
                       ]),
                       _vm._v(" "),
                       _c("v-spacer"),
                       _vm._v(" "),
-                      _c("v-btn", { attrs: { color: "teal", dark: "" } }, [
-                        _vm._v(_vm._s(_vm.data.reply_count) + " Replies")
+                      _c(
+                        "v-btn",
+                        { attrs: { icon: "" } },
+                        [
+                          _c(
+                            "v-icon",
+                            {
+                              staticClass: "views",
+                              attrs: { color: "light-blue darken-4" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            remove_red_eye\n                        "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "count" }, [
+                        _vm._v(_vm._s(_vm.data.views))
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        { attrs: { icon: "" } },
+                        [
+                          _c(
+                            "v-icon",
+                            {
+                              staticClass: "answers",
+                              attrs: { color: "pink" }
+                            },
+                            [
+                              _vm._v(
+                                "\n                            question_answer\n                        "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "count" }, [
+                        _vm._v(_vm._s(_vm.data.reply_count))
                       ])
                     ],
                     1

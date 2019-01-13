@@ -10,15 +10,21 @@
                                 {{ data.title }}
                             </div>
                             <span class="grey--text">{{data.user}} asked {{data.created_at}}</span>
-                            <span
-                                    class="grey--text"
-                                    v-if="data.updated_at !== data.created_at"
-                            >
-                                (updated {{data.updated_at}})
-                            </span>
                         </div>
                         <v-spacer></v-spacer>
-                        <v-btn color="teal" dark>{{data.reply_count}} Replies</v-btn>
+                        <v-btn icon>
+                            <v-icon color="light-blue darken-4" class="views">
+                                remove_red_eye
+                            </v-icon>
+                        </v-btn>
+                        <span class="count">{{data.views}}</span>
+
+                        <v-btn icon>
+                            <v-icon color="pink" class="answers">
+                                question_answer
+                            </v-icon>
+                        </v-btn>
+                        <span class="count">{{data.reply_count}}</span>
                     </v-card-title>
                     <v-divider></v-divider>
                 </v-flex>
@@ -112,5 +118,15 @@
 </script>
 
 <style scoped>
+    .views {
+        font-size: 30px;
+    }
 
+    .answers {
+        font-size: 26px;
+    }
+
+    .count {
+        font-size: 15px;
+    }
 </style>

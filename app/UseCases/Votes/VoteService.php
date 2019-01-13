@@ -5,7 +5,7 @@ namespace App\UseCases\Votes;
 
 use App\Models\Question;
 
-class VoteRepository
+class VoteService
 {
     public function deleteEarlyVote(Question $question)
     {

@@ -41,6 +41,11 @@ class Question extends Model
         return $this->hasMany(Votes::class)->where('type', false);
     }
 
+    public function addView()
+    {
+        return $this->increment('views');
+    }
+
     protected static function boot()
     {
         parent::boot();

@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\QuestionResource;
 use App\Models\Question;
+use App\UseCases\Question\QuestionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class QuestionController extends Controller
 {
-    public function __construct()
+    private $service;
+
+    public function __construct(QuestionService $service)
     {
         $this->middleware('jwt', ['except' => ['index', 'show']]);
+        $this->service = $service;
     }
 
     public function index()
@@ -33,6 +37,7 @@ class QuestionController extends Controller
 
     public function show(Question $question)
     {
+        $this->service->addView($question);
         return new QuestionResource($question);
     }
 

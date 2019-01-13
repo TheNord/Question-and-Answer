@@ -36,3 +36,9 @@ queue:
 
 horizon:
 	docker-compose exec php-cli php artisan horizon
+
+clear-redis:
+	docker exec -it question_redis_1_1a309afd4ceb redis-cli FLUSHALL
+
+websockets-start:
+	docker-compose exec php-fpm php artisan websockets:serve

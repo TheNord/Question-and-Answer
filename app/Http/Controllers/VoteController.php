@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Events\VoteEvent;
 use App\Models\Question;
-use App\UseCases\Votes\VoteRepository;
+use App\UseCases\Votes\VoteService;
 use Illuminate\Http\Request;
 
 class VoteController extends Controller
 {
     private $repository;
 
-    public function __construct(VoteRepository $repository)
+    public function __construct(VoteService $repository)
     {
         $this->middleware('jwt');
         $this->repository = $repository;
