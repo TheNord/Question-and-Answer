@@ -56,6 +56,10 @@
 
                 EventBus.$on('cancelEditing', () => {
                     this.editing = false;
+                });
+
+                EventBus.$on('updateQuestion', (res) => {
+                    this.question = res;
                 })
             },
             getQuestion() {

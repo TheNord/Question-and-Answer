@@ -28,9 +28,9 @@
             return {
                 items: [
                     {title: 'Forum', to: '/forum', show: true},
+                    {title: 'Tags', to: '/tags', show: true},
                     {title: 'Login', to: '/login', show: !User.loggedIn()},
                     {title: 'Ask Question', to: '/ask', show: User.loggedIn()},
-                    {title: 'Category', to: '/category', show: User.loggedIn()},
                     {title: 'Logout', to: '/logout', show: User.loggedIn()},
                 ]
             }

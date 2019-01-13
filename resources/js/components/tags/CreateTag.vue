@@ -3,7 +3,7 @@
         <v-form @submit.prevent="submit">
             <v-text-field
                     v-model="form.name"
-                    label="Category Name"
+                    label="Tag Name"
                     type="text"
                     required
             ></v-text-field>
@@ -15,11 +15,11 @@
 
         <v-card class="mt-4">
             <v-toolbar color="indigo" dark dense>
-                <v-toolbar-title>Categories</v-toolbar-title>
+                <v-toolbar-title>tags</v-toolbar-title>
             </v-toolbar>
 
             <v-list>
-                <div v-for="(category, index) in categories" :key="category.id">
+                <div v-for="(tag, index) in tags" :key="tag.id">
                     <v-list-tile>
 
                         <v-list-tile-action>
@@ -30,13 +30,13 @@
 
                         <v-list-tile-content>
                             <v-list-tile-title>
-                                {{category.name}}
+                                {{tag.name}}
                             </v-list-tile-title>
                         </v-list-tile-content>
 
 
                         <v-list-tile-action>
-                            <v-btn icon small @click="destroy(category.slug, index)">
+                            <v-btn icon small @click="destroy(tag.slug, index)">
                                 <v-icon color="red">delete</v-icon>
                             </v-btn>
                         </v-list-tile-action>
@@ -59,7 +59,7 @@
                     name: null
                 },
                 errors: {},
-                categories: {},
+                tags: {},
                 editSlug: null
             }
         },
@@ -69,38 +69,38 @@
             },
             create() {
                 axios
-                    .post('/api/category', this.form)
+                    .post('/api/tags', this.form)
                     .then(res => {
-                        this.categories.unshift(res.data);
+                        this.tags.unshift(res.data);
                         this.form.name = null
                     })
                     .catch(error => this.errors = error.response.data.errors)
             },
             update() {
                 axios
-                    .put(`/api/category/${this.editSlug}`, this.form)
+                    .put(`/api/tags/${this.editSlug}`, this.form)
                     .then(res => {
-                        this.categories.unshift(res.data);
+                        this.tags.unshift(res.data);
                         this.form.name = null
                     })
                     .catch(error => this.errors = error.response.data.errors)
             },
             destroy(slug, index) {
                 axios
-                    .delete(`/api/category/${slug}`)
-                    .then(res => this.categories.splice(index, 1))
+                    .delete(`/api/tags/${slug}`)
+                    .then(res => this.tags.splice(index, 1))
                     .catch(error => console.log(error))
             },
             edit(index) {
-                this.form.name = this.categories[index].name;
-                this.editSlug = this.categories[index].slug;
-                this.categories.splice(index, 1)
+                this.form.name = this.tags[index].name;
+                this.editSlug = this.tags[index].slug;
+                this.tags.splice(index, 1)
             }
         },
         created() {
             axios
-                .get('/api/category')
-                .then(res => this.categories = res.data.data)
+                .get('/api/tags')
+                .then(res => this.tags = res.data.data)
                 .catch(error => console.log(error))
         },
     }

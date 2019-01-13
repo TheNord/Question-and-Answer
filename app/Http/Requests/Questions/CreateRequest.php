@@ -26,7 +26,7 @@ class CreateRequest extends FormRequest
         return [
             'title' => 'required|string|max:255|unique:questions',
             'body' => 'required|string|min:30|max:10000',
-            'category_id' => 'required'
+            'tags_id' => 'required'
         ];
     }
 }

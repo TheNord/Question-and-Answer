@@ -5,9 +5,9 @@
         </v-toolbar>
 
         <v-list>
-            <v-list-tile v-for="category in categories" :key="category.id">
+            <v-list-tile v-for="tag in tags" :key="tag.id">
                 <v-list-tile-content>
-                    <v-list-tile-title>{{category.name}}</v-list-tile-title>
+                    <v-list-tile-title>{{tag.name}}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
         </v-list>
@@ -18,13 +18,13 @@
     export default {
         data() {
             return {
-                categories: {}
+                tags: {}
             }
         },
         created() {
             axios
-                .get('/api/category')
-                .then(res => this.categories = res.data.data)
+                .get('/api/tags')
+                .then(res => this.tags = res.data.data)
                 .catch(error => console.log(error))
         },
     }

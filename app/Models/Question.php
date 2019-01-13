@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $fillable = ['title', 'slug', 'body', 'user_id', 'category_id'];
+    protected $fillable = ['title', 'slug', 'body', 'user_id', 'tags_id'];
 
     protected $with = ['replies'];
 
@@ -16,9 +16,22 @@ class Question extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function tags()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(
+            Tag::class,
+            'question_tags',
+            'question_id',
+            'tag_id'
+        );
+    }
+
+    public function setTags($ids)
+    {
+        if($ids == null) {return;}
+
+        // синхронизируем тэги
+        $this->tags()->sync($ids);
     }
 
     public function replies()

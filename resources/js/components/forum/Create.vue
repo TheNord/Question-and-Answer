@@ -9,16 +9,43 @@
             ></v-text-field>
             <span class="red--text" v-if="errors.title">{{ errors.title[0] }}</span>
 
+            <!--<v-autocomplete-->
+            <!--:items="categories"-->
+            <!--v-model="form.tags_id"-->
+            <!--item-text="name"-->
+            <!--item-value="id"-->
+            <!--label="Tag"-->
+            <!--multiple-->
+            <!--autocomplete-->
+            <!--&gt;-->
+            <!--</v-autocomplete>-->
+
             <v-autocomplete
-            :items="categories"
-            v-model="form.category_id"
-            item-text="name"
-            item-value="id"
-            label="Category"
-            autocomplete
+                    :items="tags"
+                    v-model="form.tags_id"
+                    item-text="name"
+                    item-value="id"
+                    label="Tag"
+                    multiple
+                    chips
+                    autocomplete
             >
+                <template
+                        slot="selection"
+                        slot-scope="data"
+                >
+                    <v-chip
+                            :selected="data.selected"
+                            close
+                            class="chip--select-multi"
+                            @input="remove(data)"
+                    >
+                        {{ data.item.name }}
+                    </v-chip>
+                </template>
             </v-autocomplete>
-            <span class="red--text" v-if="errors.category_id">{{ errors.category_id[0] }}</span>
+
+            <span class="red--text" v-if="errors.tag_id">{{ errors.tag_id[0] }}</span>
 
             <markdown-editor v-model="form.body"></markdown-editor>
             <span class="red--text" v-if="errors.body">{{ errors.body[0] }} <br></span>
@@ -38,17 +65,17 @@
             return {
                 form: {
                     title: null,
-                    category_id: null,
+                    tags_id: [],
                     body: null
                 },
-                categories: [],
+                tags: [],
                 errors: {}
             }
         },
         created() {
             axios
-                .get('/api/category')
-                .then(res => this.categories = res.data.data)
+                .get('/api/tags')
+                .then(res => this.tags = res.data.data)
                 .catch(error => console.log(error))
         },
         methods: {
@@ -57,11 +84,15 @@
                     .post('/api/question', this.form)
                     .then(res => this.$router.push(res.data.path))
                     .catch(error => this.errors = error.response.data.errors)
+            },
+            remove(item) {
+                const index = this.form.tags_id.indexOf(item.item.id);
+                if (index >= 0) this.form.tags_id.splice(index, 1)
             }
         },
         computed:{
             disabled() {
-                return !(this.form.title && this.form.category_id && this.form.body)
+                return !(this.form.title && this.form.tags_id && this.form.body)
             }
         }
     }

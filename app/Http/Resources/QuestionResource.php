@@ -24,7 +24,7 @@ class QuestionResource extends JsonResource
             'vote_count' => $this->voteCount($votes),
             'created_at' => $this->created_at->diffForHumans(),
             'updated_at' => $this->updated_at->diffForHumans(),
-            'category' => $this->category->name,
+            'tags' => TagResource::collection($this->tags),
             'views' => $this->views
         ];
     }

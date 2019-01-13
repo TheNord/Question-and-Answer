@@ -20,10 +20,9 @@
                 </div>
 
                 <div class="question-tags">
-                    <router-link class="question-tag" :to="question.path">laravel</router-link>
-                    <router-link class="question-tag" :to="question.path">php</router-link>
-                    <router-link class="question-tag" :to="question.path">javascript</router-link>
-                    <router-link class="question-tag" :to="question.path">vuejs</router-link>
+                    <div v-for="tag in question.tags" class="tag-item">
+                        <a class="question-tag">{{tag.name}}</a>
+                    </div>
                 </div>
             </v-flex>
             <v-flex xs10>
@@ -100,8 +99,13 @@
     }
 
     .question-tags {
+        width: 188px;
         padding-top: 12px;
         padding-left: 18px;
+    }
+
+    .tag-item {
+        float:left;
     }
 
     .v-card{

@@ -28,7 +28,7 @@ class QuestionDetailResource extends JsonResource
             'updated_at' => $this->updated_at->diffForHumans(),
             'user' => $this->user->name,
             'user_id' => $this->user->id,
-            'category' => $this->category->name,
+            'tags' => TagResource::collection($this->tags),
             'slug' => $this->slug,
             'views' => $this->views
         ];

@@ -33,7 +33,11 @@
 
                 <v-flex xs11>
                     <v-card-text v-html="body"></v-card-text>
-
+                    <div class="question-tags">
+                        <div v-for="tag in data.tags">
+                            <a class="question-tag">{{tag.name}}</a>
+                        </div>
+                    </div>
                     <v-card-actions v-if="own">
                         <v-btn icon small @click="edit">
                             <v-icon color="orange">edit</v-icon>
@@ -83,6 +87,10 @@
             EventBus.$on('deleteReply', () => {
                 this.data.reply_count--
             });
+
+            EventBus.$on('deleteReply', () => {
+                this.data.reply_count--
+            });
         },
         mounted() {
             EventBus.$on('alert-canceled', () => {
@@ -118,6 +126,10 @@
 </script>
 
 <style scoped>
+    .v-card__text {
+        font-size: 15px;
+    }
+
     .views {
         font-size: 30px;
     }
@@ -128,5 +140,31 @@
 
     .count {
         font-size: 15px;
+    }
+
+    .question-tag {
+        position: relative;
+        display: inline-block;
+        padding: .4em .5em;
+        margin: 2px 8px 2px 0;
+        font-size: 11px;
+        line-height: 1;
+        white-space: nowrap;
+        text-decoration: none;
+        text-align: center;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 3px;
+        transition: all .15s ease-in-out;
+
+        color: #39739d;
+        background-color: #E1ECF4;
+        border-color: #E1ECF4;
+    }
+
+    .question-tags {
+        display: flex;
+        padding-top: 12px;
+        padding-left: 18px;
     }
 </style>

@@ -22,12 +22,18 @@ class QuestionController extends Controller
 
     public function index()
     {
-        return QuestionResource::collection(Question::latest()->with('vote')->limit(20)->get());
+        return QuestionResource::collection(Question::latest()->with('vote')->with('tags')->limit(20)->get());
     }
 
     public function store(CreateRequest $request)
     {
-        $question = $request->user()->question()->create($request->all());
+        $question = $request->user()->question()->create([
+            'title' => $request->title,
+            'body' => $request->body
+        ]);
+
+        $question->setTags($request->tags_id);
+
         return response(new QuestionResource($question), 201);
     }
 
@@ -43,10 +49,12 @@ class QuestionController extends Controller
             $this->checkAccess($question->user_id);
             $request->validate([
                 'title' => ['required', 'string', 'max:255', Rule::unique('questions')->ignore($question->id)],
-                'body' => 'required|string|min:30'
+                'body' => 'required|string|min:30',
+                'tags' => 'required'
             ]);
-            $question->update($request->all());
-            return response('Updated', 202);
+            $question->update($request->only('title', 'body', 'tags'));
+            $question->setTags($request->tags);
+            return response(new QuestionDetailResource($question), 200);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
         }

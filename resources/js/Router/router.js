@@ -10,7 +10,7 @@ import Signup from '../components/login/Signup'
 import Forum from '../components/forum/Forum'
 import Read from '../components/forum/Read'
 import Create from '../components/forum/Create'
-import CreateCategory from '../components/category/CreateCategory'
+import CreateTag from '../components/tags/CreateTag'
 
 const routes = [
     { path: '/', component: Parallax },
@@ -20,7 +20,7 @@ const routes = [
     { path: '/forum', component: Forum, name: 'forum' },
     { path: '/question/:slug', component: Read, name: 'read' },
     { path: '/ask', component: Create},
-    { path: '/category', component: CreateCategory},
+    { path: '/tags', component: CreateTag},
 ];
 
 const router = new VueRouter({
