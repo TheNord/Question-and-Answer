@@ -29,7 +29,7 @@ class Reply extends Model
         parent::boot();
 
         static::creating(function ($reply) {
-            $reply->user_id = auth()->id();
+            auth()->check() ? $reply->user_id = auth()->id() : null;
         });
     }
 }
