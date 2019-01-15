@@ -15,7 +15,7 @@ class ReplyResource extends JsonResource
      */
     public function toArray($request)
     {
-        return Cache::rememberForever('reply_' .$this->id, function () {
+        //return Cache::rememberForever('reply_' .$this->id, function () {
             return [
                 'id' => $this->id,
                 'reply' => $this->body,
@@ -24,9 +24,10 @@ class ReplyResource extends JsonResource
                 'question_slug' => $this->question->slug,
                 'like_count' => $this->like->count(),
                 'liked' => !!$this->like->where('user_id', auth()->id())->count(),
+                'comments' => ReplyCommentResource::collection($this->comment),
                 'created_at' => $this->created_at->diffForHumans()
             ];
-        });
+       // });
 
     }
 }

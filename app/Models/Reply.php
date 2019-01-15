@@ -24,6 +24,11 @@ class Reply extends Model
         return $this->hasMany(Like::class);
     }
 
+    public function comment()
+    {
+        return $this->hasMany(ReplyComment::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

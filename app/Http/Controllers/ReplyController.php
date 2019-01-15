@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewReplyEvent;
+use App\Http\Requests\Replies\CommentRequest;
 use App\Http\Requests\Replies\CreateRequest;
+use App\Http\Resources\ReplyCommentResource;
 use App\Http\Resources\ReplyResource;
 use App\Models\Question;
 use App\Models\Reply;
 use App\UseCases\Reply\ReplyService;
+use Illuminate\Http\Request;
 
 class ReplyController extends Controller
 {
@@ -27,6 +31,12 @@ class ReplyController extends Controller
     {
         $reply = $this->service->create($question, $request);
         return response(['reply' => new ReplyResource($reply)], 201);
+    }
+
+    public function createComment(Reply $reply, CommentRequest $request)
+    {
+        $reply = $this->service->addComment($reply, $request);
+        return response($reply, 201);
     }
 
     public function show(Question $question, Reply $reply)

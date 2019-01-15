@@ -23,3 +23,6 @@ Broadcast::channel('voteChannel', function () {
     return true;
 });
 
+Broadcast::channel('replyChannel', function () {
+    return true;
+});
