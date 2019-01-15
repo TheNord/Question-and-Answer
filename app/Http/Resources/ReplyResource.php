@@ -25,7 +25,7 @@ class ReplyResource extends JsonResource
                 'like_count' => $this->like->count(),
                 'liked' => !!$this->like->where('user_id', auth()->id())->count(),
                 'comments' => ReplyCommentResource::collection($this->comment),
-                'created_at' => $this->created_at->diffForHumans()
+                'created_at' => $this->created_at
             ];
         });
     }

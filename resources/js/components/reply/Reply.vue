@@ -3,7 +3,9 @@
         <v-card>
             <v-card-title>
                 <div class="headline">{{data.user}}</div>
-                <div class="ml-2">said {{data.created_at}}</div>
+                <div class="ml-2">
+                    <vue-moments-ago prefix="said" suffix="ago" :date="data.created_at.date"></vue-moments-ago>
+                </div>
                 <v-spacer></v-spacer>
                 <like :data="data"></like>
             </v-card-title>
@@ -18,7 +20,7 @@
 
                 <div v-for="comment in data.comments">
                     <v-divider></v-divider>
-                    <v-card-text class="comment">{{comment.body}} - {{comment.user}} <span class="text--grey">said {{comment.created_at}}</span>
+                    <v-card-text class="comment">{{comment.body}} - {{comment.user}} <span class="text--grey"><vue-moments-ago prefix="said" suffix="ago" :date="comment.created_at.date"></vue-moments-ago></span>
                     </v-card-text>
                     <v-divider></v-divider>
                 </div>
@@ -45,6 +47,7 @@
     import EditReply from './EditReply';
     import Like from '../likes/Like';
     import AddComment from './AddComment';
+    import VueMomentsAgo from 'vue-moments-ago'
 
     export default {
         props: ['data', 'index'],
@@ -102,7 +105,8 @@
         components: {
             EditReply,
             Like,
-            AddComment
+            AddComment,
+            VueMomentsAgo
         }
     }
 </script>

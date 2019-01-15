@@ -21,7 +21,7 @@ class ReplyCommentResource extends JsonResource
                 'body' => $this->body,
                 'user' => $this->user->name,
                 'user_id' => $this->user_id,
-                'created_at' => $this->created_at->diffForHumans()
+                'created_at' => $this->created_at
             ];
         });
     }
