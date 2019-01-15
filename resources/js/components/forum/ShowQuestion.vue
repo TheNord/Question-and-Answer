@@ -122,7 +122,16 @@
                 axios
                     .delete(`/api/question/${this.slug}`)
                     .then(res => this.$router.push('/forum'))
-                    .catch(error => console.log(error))
+                    .catch(error => {
+                        let toast = this.$toasted.show(error.response.data.error, {
+                            theme: "bubble",
+                            position: "bottom-left",
+                            duration : 5000,
+                            icon : {
+                                name : 'error'
+                            }
+                        });
+                    })
             }
         },
         components: {

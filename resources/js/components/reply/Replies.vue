@@ -36,7 +36,16 @@
                     axios
                         .delete(`/api/question/${this.questionSlug}/reply/${this.content[index].id}`)
                         .then(res => this.content.splice(index, 1))
-                        .catch(error => console.log(error))
+                        .catch(error => {
+                            let toast = this.$toasted.show(error.response.data.error, {
+                                theme: "bubble",
+                                position: "bottom-left",
+                                duration : 5000,
+                                icon : {
+                                    name : 'error'
+                                }
+                            });
+                        })
                 });
 
                 Echo.channel('deleteReplyChannel')

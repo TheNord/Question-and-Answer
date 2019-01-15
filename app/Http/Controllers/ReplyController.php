@@ -59,6 +59,7 @@ class ReplyController extends Controller
     {
         try {
             $this->checkManage($reply);
+            $this->checkComments($reply);
             $this->service->delete($reply);
             return response(null, 204);
         } catch (\Exception $e) {
@@ -70,6 +71,12 @@ class ReplyController extends Controller
     {
         if ($reply->user_id != auth()->id()) {
             throw new \Exception('You can not manage this answer');
+        }
+    }
+
+    private function checkComments(Reply $reply) {
+        if ($reply->comment->count() > 0) {
+            throw new \Exception('You can not delete messages that were commented.');
         }
     }
 }

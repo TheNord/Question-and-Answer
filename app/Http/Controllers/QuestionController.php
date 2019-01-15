@@ -64,7 +64,8 @@ class QuestionController extends Controller
     {
         try {
             $this->checkAccess($question->user_id);
-            $question->delete();
+            $this->checkAnswers($question);
+            //$question->delete();
             return response('Deleted', 200);
         } catch (\Exception $e) {
             return response(['error' => $e->getMessage()], 400);
@@ -78,5 +79,11 @@ class QuestionController extends Controller
             throw new \Exception('You can only manage your questions.');
         }
 
+    }
+
+    private function checkAnswers(Question $question) {
+        if ($question->replies->count() > 0) {
+            throw new \Exception('You can not delete messages that were answered.');
+        }
     }
 }
