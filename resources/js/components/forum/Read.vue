@@ -15,7 +15,7 @@
             :question-slug="question.slug"
         ></replies>
 
-        <new-reply v-if="loggedIn" :question-slug="question.slug"></new-reply>
+        <new-reply v-if="loggedIn && showCreate" :question-slug="question.slug"></new-reply>
         <div v-else>
             <v-container>
                 <router-link to="/login">Login</router-link> in to Reply or
@@ -36,7 +36,8 @@
         data() {
             return {
                 question: null,
-                editing: false
+                editing: false,
+                showCreate: true
             }
         },
         created() {
@@ -50,6 +51,13 @@
         },
         methods: {
             listen() {
+                EventBus.$on('newReply', () => {
+                    this.showCreate = false;
+                    this.$nextTick(() => {
+                        this.showCreate = true;
+                    });
+                });
+
                 EventBus.$on('startEditing', () => {
                     this.editing = true;
                 });

@@ -75,6 +75,12 @@
                     this.data.reply_count++
                 });
 
+            Echo.channel('replyChannel')
+                .listen('CreateReplyEvent', (e) => {
+                    this.data.reply_count++;
+                    this.data.replies.push(e.reply)
+                });
+
             Echo.channel('deleteReplyChannel')
                 .listen('DeleteReplyEvent', (e) => {
                     this.data.reply_count--

@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="cyan" dark dense>
-            <v-toolbar-title>Categories</v-toolbar-title>
+            <v-toolbar-title>Tags</v-toolbar-title>
         </v-toolbar>
 
         <v-list>

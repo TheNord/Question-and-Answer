@@ -39,11 +39,6 @@
                         .catch(error => console.log(error))
                 });
 
-                Echo.private('App.User.' + User.id())
-                    .notification((notification) => {
-                       this.content.push(notification.reply)
-                    });
-
                 Echo.channel('deleteReplyChannel')
                     .listen('DeleteReplyEvent', (e) => {
                         for(let index = 0; index < this.content.length; index++) {

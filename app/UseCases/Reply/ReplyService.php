@@ -3,11 +3,13 @@
 namespace App\UseCases\Reply;
 
 
+use App\Events\CreateReplyEvent;
 use App\Events\DeleteReplyEvent;
 use App\Events\NewReplyEvent;
 use App\Http\Requests\Replies\CommentRequest;
 use App\Http\Requests\Replies\CreateRequest;
 use App\Http\Resources\ReplyCommentResource;
+use App\Http\Resources\ReplyResource;
 use App\Models\Question;
 use App\Models\Reply;
 use App\Notifications\NewReplyNotification;
@@ -24,6 +26,8 @@ class ReplyService
             $user->notify(new NewReplyNotification($reply));
         }
 
+        broadcast(new CreateReplyEvent(new ReplyResource($reply)))->toOthers();
+
         return $reply;
     }
 
@@ -37,6 +41,8 @@ class ReplyService
         $comment = new ReplyCommentResource($comment);
 
         broadcast(new NewReplyEvent($reply->id, $comment))->toOthers();
+
+        Cache::delete('reply_' .$reply->id);
 
         return $comment;
     }

@@ -2523,7 +2523,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       question: null,
-      editing: false
+      editing: false,
+      showCreate: true
     };
   },
   created: function created() {
@@ -2539,6 +2540,13 @@ __webpack_require__.r(__webpack_exports__);
     listen: function listen() {
       var _this = this;
 
+      EventBus.$on('newReply', function () {
+        _this.showCreate = false;
+
+        _this.$nextTick(function () {
+          _this.showCreate = true;
+        });
+      });
       EventBus.$on('startEditing', function () {
         _this.editing = true;
       });
@@ -2652,6 +2660,11 @@ __webpack_require__.r(__webpack_exports__);
 
     Echo.private('App.User.' + User.id()).notification(function (notification) {
       _this.data.reply_count++;
+    });
+    Echo.channel('replyChannel').listen('CreateReplyEvent', function (e) {
+      _this.data.reply_count++;
+
+      _this.data.replies.push(e.reply);
     });
     Echo.channel('deleteReplyChannel').listen('DeleteReplyEvent', function (e) {
       _this.data.reply_count--;
@@ -3200,9 +3213,6 @@ __webpack_require__.r(__webpack_exports__);
         }).catch(function (error) {
           return console.log(error);
         });
-      });
-      Echo.private('App.User.' + User.id()).notification(function (notification) {
-        _this.content.push(notification.reply);
       });
       Echo.channel('deleteReplyChannel').listen('DeleteReplyEvent', function (e) {
         for (var index = 0; index < _this.content.length; index++) {
@@ -68912,7 +68922,7 @@ var render = function() {
       _c(
         "v-toolbar",
         { attrs: { color: "cyan", dark: "", dense: "" } },
-        [_c("v-toolbar-title", [_vm._v("Categories")])],
+        [_c("v-toolbar-title", [_vm._v("Tags")])],
         1
       ),
       _vm._v(" "),
@@ -69446,7 +69456,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _vm.loggedIn
+          _vm.loggedIn && _vm.showCreate
             ? _c("new-reply", { attrs: { "question-slug": _vm.question.slug } })
             : _c(
                 "div",
